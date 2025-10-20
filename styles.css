@@ -1,20 +1,20 @@
 /* Sidebar Container */
 .yt-comments-sidebar {
-    width: 350px;
-    min-width: 350px;
-    max-width: 350px;
+    /* width: 350px; */
+    /* min-width: 350px; */
+    /* max-width: 350px; */
     height: fit-content;
     max-height: calc(100vh - 150px);
     background: var(--yt-spec-base-background, #0f0f0f);
     border-radius: 12px;
-    margin-left: 16px;
-    margin-right: 16px;
+    /* margin-left: 16px; */
+    /* margin-right: 16px; */
     display: flex;
     flex-direction: column;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     position: sticky;
-    top: 80px;
+    /* top: 80px; */
     transition: all 0.3s ease;
 }
 
@@ -249,7 +249,7 @@ html[dark="false"] .comment-votes {
 }
 
 #yt-comments-sidebar {
-    margin-bottom: 7rem;
+    margin-bottom: 2rem;
     width: 100%;
     padding: 1rem;
     background: #212121;
@@ -260,4 +260,10 @@ html[dark="false"] .comment-votes {
     top: 0;
     right: 0;
     margin-right: 1rem;
+}
+
+ytd-watch-next-secondary-results-renderer>#contents {
+    height: 100vh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
 }

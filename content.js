@@ -286,7 +286,7 @@ function init() {
     console.log(
       "YouTube Comments Sidebar: Secondary found, creating sidebar in 2s"
     );
-    setTimeout(createSidebar, 2000);
+    setTimeout(createSidebar, styleContentsDiv, 2000);
   });
 }
 
@@ -360,5 +360,19 @@ let navigationObserver = new MutationObserver(() => {
     }
   }
 });
+
+function styleContentsDiv() {
+  console.log("styleContentsDiv loaded...");
+
+  const contentsDiv = document.getElementById("contents");
+  if (contentsDiv) {
+    contentsDiv.style.border = "3px solid red"; // example border
+    contentsDiv.style.padding = "10px";
+    contentsDiv.style.borderRadius = "8px";
+  } else {
+    // Retry in 500ms if element not found (YouTube dynamically loads content)
+    setTimeout(styleContentsDiv, 500);
+  }
+}
 
 navigationObserver.observe(document.body, { childList: true, subtree: true });
