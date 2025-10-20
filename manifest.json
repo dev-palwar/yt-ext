@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "YouTube Comments Sidebar",
+    "name": "yt-ext",
     "version": "1.0.0",
     "description": "Displays YouTube comments in a custom sidebar next to the video",
     "permissions": [
@@ -24,5 +24,21 @@
             ],
             "run_at": "document_end"
         }
-    ]
+    ],
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
+        }
+    },
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'; connect-src *"
+    }
 }
