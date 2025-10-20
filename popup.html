@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            width: 250px;
+            padding: 16px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        h2 {
+            margin: 0 0 12px 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0 0 16px 0;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #aaa;
+        }
+
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            background: #2a2a2a;
+            text-align: center;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .status.active {
+            background: #1a4d2e;
+            color: #4ade80;
+        }
+
+        .info {
+            font-size: 12px;
+            color: #888;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #333;
+        }
+
+        .info strong {
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>YT Comments Sidebar</h2>
+    <p>Shows YouTube comments next to the video player.</p>
+
+    <div class="status active" id="status">
+        ✓ Extension Active
+    </div>
+
+    <div class="info">
+        <strong>How to use:</strong><br>
+        Navigate to any YouTube video. The comments sidebar will appear automatically on the right side of the video.
+        <br><br>
+        <strong>Controls:</strong><br>
+        • ↻ - Refresh comments<br>
+        • ✕ - Hide/show sidebar
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

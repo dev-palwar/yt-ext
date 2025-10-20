@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "YouTube Comments Sidebar",
+    "version": "1.0.0",
+    "description": "Displays YouTube comments in a custom sidebar next to the video",
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://www.youtube.com/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.youtube.com/watch*"
+            ],
+            "js": [
+                "test.js",
+                "content.js"
+            ],
+            "css": [
+                "styles.css"
+            ],
+            "run_at": "document_end"
+        }
+    ]
+}
