@@ -1,5 +1,9 @@
 # YouTube Comments Sidebar Extension
 
+
+https://github.com/user-attachments/assets/718280e1-f7fa-46f8-b150-38c9d831d364
+
+
 A simple Chrome extension that moves YouTube comments to a sidebar above the recommended videos section. All comment features work - likes, replies, posting, everything!
 
 ## What it does
