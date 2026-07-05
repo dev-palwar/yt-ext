@@ -1,51 +1,53 @@
-/* Sidebar Container */
-.yt-comments-sidebar {
-    /* width: 350px; */
-    /* min-width: 350px; */
-    /* max-width: 350px; */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
+#yt-comments-sidebar {
+    width: 100%;
     height: fit-content;
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 120px);
+    margin-bottom: 24px;
     background: var(--yt-spec-base-background, #0f0f0f);
+    border: 1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
     border-radius: 12px;
-    /* margin-left: 16px; */
-    /* margin-right: 16px; */
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    position: sticky;
-    /* top: 80px; */
-    transition: all 0.3s ease;
-}
-
-.yt-comments-sidebar.hidden {
-    width: 50px;
-    min-width: 50px;
+    position: relative;
+    transition: max-height 0.3s ease;
+    font-family: "Roboto", "Arial", sans-serif;
     overflow: hidden;
 }
 
-.yt-comments-sidebar.hidden .sidebar-header h3,
-.yt-comments-sidebar.hidden .sidebar-controls button:first-child,
-.yt-comments-sidebar.hidden .comments-container {
-    display: none;
+
+
+/* Hidden State Fix */
+#yt-comments-sidebar.hidden {
+    max-height: 64px;
+    /* Only show header */
 }
 
-/* Header */
+#yt-comments-sidebar.hidden .comments-container {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#yt-comments-sidebar.hidden .sidebar-header {
+    border-bottom-color: transparent;
+}
+
 .sidebar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
-    border-bottom: 1px solid var(--yt-spec-10-percent-layer, #3f3f3f);
-    background: var(--yt-spec-raised-background, #212121);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
+    background: transparent;
+    z-index: 2;
 }
 
 .sidebar-header h3 {
     margin: 0;
     font-size: 16px;
     font-weight: 500;
-    color: var(--yt-spec-text-primary, #fff);
-    font-family: "Roboto", "Arial", sans-serif;
+    color: var(--yt-spec-text-primary, #f1f1f1);
 }
 
 .sidebar-controls {
@@ -57,18 +59,19 @@
     background: transparent;
     border: none;
     color: var(--yt-spec-text-secondary, #aaa);
-    font-size: 18px;
+    font-size: 14px;
     cursor: pointer;
-    padding: 6px 8px;
-    border-radius: 4px;
-    transition: all 0.2s;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .sidebar-controls button:hover {
-    background: var(--yt-spec-badge-chip-background, #3f3f3f);
+    background: var(--yt-spec-badge-chip-background, rgba(255, 255, 255, 0.1));
     color: var(--yt-spec-text-primary, #fff);
 }
 
@@ -77,13 +80,15 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 12px;
+    padding: 16px;
+    transition: opacity 0.3s ease;
+    opacity: 1;
     scrollbar-width: thin;
-    scrollbar-color: #717171 transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
 .comments-container::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 .comments-container::-webkit-scrollbar-track {
@@ -95,175 +100,44 @@
     border-radius: 4px;
 }
 
-.comments-container::-webkit-scrollbar-thumb:hover {
-    background: #909090;
-}
+/* .comments-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+} */
 
 /* Loading and Error States */
 .loading,
 .error {
     text-align: center;
-    padding: 24px;
-    color: var(--yt-spec-text-secondary, #aaa);
+    padding: 32px;
+    color: #94a3b8;
     font-size: 14px;
+    font-weight: 500;
 }
 
 .error {
-    color: #f66;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 8px;
+    margin: 16px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
-/* Comment Item */
-.comment-item {
+/* Embedded YouTube Comments Overrides */
+/* Note: We try to style the embedded content if shadow DOM permits, or global styling */
+.in-sidebar {
+    background: transparent !important;
+}
+
+.in-sidebar ytd-comment-thread-renderer {
     margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--yt-spec-10-percent-layer, #3f3f3f);
-    animation: fadeIn 0.3s ease;
 }
 
-.comment-item:last-child {
-    border-bottom: none;
+.in-sidebar ytd-comment-thread-renderer:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Comment Header */
-.comment-header {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 8px;
-}
-
-.comment-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.comment-meta {
-    flex: 1;
-    min-width: 0;
-}
-
-.comment-author {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--yt-spec-text-primary, #fff);
-    font-family: "Roboto", "Arial", sans-serif;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.comment-time {
-    font-size: 12px;
-    color: var(--yt-spec-text-secondary, #aaa);
-}
-
-/* Comment Content */
-.comment-content {
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--yt-spec-text-primary, #fff);
-    word-wrap: break-word;
-    font-family: "Roboto", "Arial", sans-serif;
-    margin-bottom: 8px;
-}
-
-.comment-content a {
-    color: var(--yt-spec-call-to-action, #3ea6ff);
-    text-decoration: none;
-}
-
-.comment-content a:hover {
-    text-decoration: underline;
-}
-
-/* Comment Votes */
-.comment-votes {
-    font-size: 12px;
-    color: var(--yt-spec-text-secondary, #aaa);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1280px) {
-    .yt-comments-sidebar {
-        width: 300px;
-        min-width: 300px;
-        max-width: 300px;
-    }
-}
-
-@media (max-width: 1024px) {
-    .yt-comments-sidebar {
-        display: none;
-    }
-}
-
-/* Light theme support */
-html[dark="false"] .yt-comments-sidebar {
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-html[dark="false"] .sidebar-header {
-    background: #f9f9f9;
-    border-bottom-color: #e5e5e5;
-}
-
-html[dark="false"] .sidebar-header h3,
-html[dark="false"] .comment-author,
-html[dark="false"] .comment-content {
-    color: #030303;
-}
-
-html[dark="false"] .sidebar-controls button {
-    color: #606060;
-}
-
-html[dark="false"] .sidebar-controls button:hover {
-    background: #e5e5e5;
-    color: #030303;
-}
-
-html[dark="false"] .comment-item {
-    border-bottom-color: #e5e5e5;
-}
-
-html[dark="false"] .comment-time,
-html[dark="false"] .comment-votes {
-    color: #606060;
-}
-
-#yt-comments-sidebar {
-    margin-bottom: 2rem;
-    width: 100%;
-    padding: 1rem;
-    background: #212121;
-}
-
-#toggle-sidebar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-right: 1rem;
-}
-
+/* Make sure the youtube secondary column properly allows scrolling */
 ytd-watch-next-secondary-results-renderer>#contents {
-    height: 100vh !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
+    height: auto !important;
+    overflow: visible !important;
 }

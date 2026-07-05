@@ -1,11 +1,10 @@
 {
     "manifest_version": 3,
-    "name": "yt-ext",
+    "name": "Comments Sidebar for YouTube",
     "version": "1.0.0",
     "description": "Displays YouTube comments in a custom sidebar next to the video",
     "permissions": [
-        "activeTab",
-        "scripting"
+        "activeTab"
     ],
     "host_permissions": [
         "https://www.youtube.com/*"
@@ -16,7 +15,6 @@
                 "https://www.youtube.com/watch*"
             ],
             "js": [
-                "test.js",
                 "content.js"
             ],
             "css": [

@@ -1,5 +1,4 @@
 // Waits for YouTube to load
-console.log("YouTube Comments Sidebar: Content script loaded!");
 
 function waitForElement(selector, callback) {
   const observer = new MutationObserver((mutations, obs) => {
@@ -18,11 +17,9 @@ function waitForElement(selector, callback) {
 
 // Creates the sidebar
 function createSidebar() {
-  console.log("YouTube Comments Sidebar: Creating sidebar...");
 
   // Checks if sidebar already exists
   if (document.getElementById("yt-comments-sidebar")) {
-    console.log("YouTube Comments Sidebar: Sidebar already exists");
     return;
   }
 
@@ -36,8 +33,17 @@ function createSidebar() {
   header.innerHTML = `
     <h3>Comments</h3>
     <div class="sidebar-controls">
-      <button id="refresh-comments" title="Refresh">↻</button>
-      <button id="toggle-sidebar" title="Hide">▼</button>
+      <button id="refresh-comments" title="Refresh">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 2v6h-6"></path>
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+        </svg>
+      </button>
+      <button id="toggle-sidebar" title="Toggle">
+        <svg id="toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+      </button>
     </div>
   `;
 
@@ -53,21 +59,16 @@ function createSidebar() {
   const secondary = document.querySelector("#secondary-inner");
 
   if (secondary) {
-    console.log(
-      "YouTube Comments Sidebar: Found #secondary-inner, inserting sidebar"
-    );
     // Inserts sidebar above secondary
     secondary.parentNode.insertBefore(sidebar, secondary);
 
     // Modifys secondary styling to accommodate sidebar
     secondary.style.display = "block";
   } else {
-    console.error("YouTube Comments Sidebar: #secondary-inner not found!");
     return;
   }
 
   // Moves comments into sidebar
-  console.log("YouTube Comments Sidebar: About to move comments");
   moveCommentsToSidebar();
 
   // Adds event listeners
@@ -75,39 +76,30 @@ function createSidebar() {
   const toggleBtn = document.getElementById("toggle-sidebar");
 
   if (refreshBtn && toggleBtn) {
-    console.log("YouTube Comments Sidebar: Adding event listeners");
     refreshBtn.addEventListener("click", () => {
-      console.log("YouTube Comments Sidebar: Refresh button clicked");
       moveCommentsToSidebar();
     });
     toggleBtn.addEventListener("click", toggleSidebar);
   } else {
-    console.error("YouTube Comments Sidebar: Buttons not found!");
   }
 }
 
 // Moves the actual YouTube comments section into the sidebar
 function moveCommentsToSidebar() {
-  console.log("YouTube Comments Sidebar: moveCommentsToSidebar() called!");
 
   const container = document.getElementById("sidebar-comments");
   if (!container) {
-    console.error(
-      "YouTube Comments Sidebar: Container #sidebar-comments not found!"
-    );
     return;
   }
 
   // Checks if we already moved comments
   const existingComments = container.querySelector("ytd-comments#comments");
   if (existingComments) {
-    console.log("YouTube Comments Sidebar: Comments already in sidebar");
     return;
   }
 
   // Function to trigger YouTube to load comments by scrolling
   function triggerCommentsLoad() {
-    console.log("YouTube Comments Sidebar: Triggering comments to load...");
 
     // Finds comments section in original location
     const commentsSection = document.querySelector("ytd-comments#comments");
@@ -126,9 +118,6 @@ function moveCommentsToSidebar() {
 
   // Functions to attempt moving comments
   function attemptMove(retryCount = 0) {
-    console.log(
-      `YouTube Comments Sidebar: Attempt ${retryCount + 1} to move comments...`
-    );
 
     // Firsts, try to trigger loading on early attempts
     if (retryCount === 2 || retryCount === 5) {
@@ -151,9 +140,6 @@ function moveCommentsToSidebar() {
     }
 
     if (!commentsSection) {
-      console.log(
-        "YouTube Comments Sidebar: Comments section not found in DOM"
-      );
       if (retryCount < 25) {
         container.innerHTML = `<div class="loading">Waiting for comments section... (${
           retryCount + 1
@@ -166,10 +152,6 @@ function moveCommentsToSidebar() {
       return;
     }
 
-    console.log(
-      "YouTube Comments Sidebar: Found comments section:",
-      commentsSection
-    );
 
     // Checks if comments section has loaded content
     const commentRenderer = commentsSection.querySelector(
@@ -178,21 +160,9 @@ function moveCommentsToSidebar() {
     const hasSpinner = commentsSection.querySelector("tp-yt-paper-spinner");
     const hasContinuation = commentsSection.querySelector("#continuations");
 
-    console.log(
-      "YouTube Comments Sidebar: Has comment renderer:",
-      !!commentRenderer
-    );
-    console.log("YouTube Comments Sidebar: Has spinner:", !!hasSpinner);
-    console.log(
-      "YouTube Comments Sidebar: Has continuation:",
-      !!hasContinuation
-    );
 
     // If no comments yet and still early, keep waiting
     if (!commentRenderer && retryCount < 5) {
-      console.log(
-        "YouTube Comments Sidebar: Comments section not populated yet, waiting..."
-      );
       container.innerHTML = `<div class="loading">Comments loading... (${
         retryCount + 1
       }/5)<br><small>Try scrolling down on the page</small></div>`;
@@ -202,11 +172,9 @@ function moveCommentsToSidebar() {
 
     // Checks if comments are already in sidebar
     if (container.contains(commentsSection)) {
-      console.log("YouTube Comments Sidebar: Comments already in container");
       return;
     }
 
-    console.log("YouTube Comments Sidebar: Moving comments section to sidebar");
 
     // Clears container
     container.innerHTML = "";
@@ -224,9 +192,6 @@ function moveCommentsToSidebar() {
       // Adds custom class for styling
       commentsSection.classList.add("in-sidebar");
 
-      console.log(
-        "YouTube Comments Sidebar: Successfully moved comments to sidebar!"
-      );
 
       // If no comments visible yet, show a message
       if (!commentRenderer && !hasSpinner) {
@@ -245,7 +210,6 @@ function moveCommentsToSidebar() {
       // Observes for new comments being loaded
       observeCommentChanges(commentsSection);
     } catch (error) {
-      console.error("YouTube Comments Sidebar: Error moving comments:", error);
       container.innerHTML =
         '<div class="error">Error loading comments. Please refresh.</div>';
     }
@@ -258,7 +222,6 @@ function moveCommentsToSidebar() {
 // Observes changes in the comments section (for infinite scroll, etc.)
 function observeCommentChanges(commentsSection) {
   const observer = new MutationObserver((mutations) => {
-    console.log("YouTube Comments Sidebar: Comments section updated");
   });
 
   observer.observe(commentsSection, {
@@ -272,21 +235,24 @@ function toggleSidebar() {
   const sidebar = document.getElementById("yt-comments-sidebar");
   if (sidebar) {
     sidebar.classList.toggle("hidden");
-    const btn = document.getElementById("toggle-sidebar");
-    btn.textContent = sidebar.classList.contains("hidden") ? "▲" : "▼";
+    const icon = document.getElementById("toggle-icon");
+    if (icon) {
+      if (sidebar.classList.contains("hidden")) {
+        icon.style.transform = "rotate(180deg)";
+        icon.style.transition = "transform 0.3s ease";
+      } else {
+        icon.style.transform = "rotate(0deg)";
+      }
+    }
   }
 }
 
 // Initializes
 function init() {
-  console.log("YouTube Comments Sidebar: Initializing...");
 
   // Waits for the page to be ready
   waitForElement("#secondary-inner", () => {
-    console.log(
-      "YouTube Comments Sidebar: Secondary found, creating sidebar in 2s"
-    );
-    setTimeout(createSidebar, styleContentsDiv, 2000);
+    setTimeout(createSidebar, 2000);
   });
 }
 
@@ -305,19 +271,13 @@ let navigationObserver = new MutationObserver(() => {
   const url = location.href;
   if (url !== lastUrl) {
     lastUrl = url;
-    console.log("YouTube Comments Sidebar: ====== URL CHANGED ======");
-    console.log("YouTube Comments Sidebar: New URL:", url);
 
     if (url.includes("/watch") && !isNavigating) {
       isNavigating = true;
-      console.log(
-        "YouTube Comments Sidebar: Watch page detected, reinitializing..."
-      );
 
       // Removes old sidebar if exists
       const oldSidebar = document.getElementById("yt-comments-sidebar");
       if (oldSidebar) {
-        console.log("YouTube Comments Sidebar: Removing old sidebar");
         oldSidebar.remove();
       }
 
@@ -325,24 +285,15 @@ let navigationObserver = new MutationObserver(() => {
       let checkCount = 0;
       const checkInterval = setInterval(() => {
         checkCount++;
-        console.log(
-          `YouTube Comments Sidebar: Checks #${checkCount} - Looking for #secondary-inner...`
-        );
 
         const secondary = document.querySelector("#secondary-inner");
         if (secondary) {
-          console.log(
-            "YouTube Comments Sidebar: Found #secondary-inner! Creating sidebar..."
-          );
           clearInterval(checkInterval);
           createSidebar();
           setTimeout(() => {
             isNavigating = false;
           }, 2000);
         } else if (checkCount >= 10) {
-          console.error(
-            "YouTube Comments Sidebar: Failed to find #secondary-inner after 10 attempts"
-          );
           clearInterval(checkInterval);
           isNavigating = false;
         }
@@ -351,28 +302,11 @@ let navigationObserver = new MutationObserver(() => {
       // Not on watch page, remove sidebar if exists
       const oldSidebar = document.getElementById("yt-comments-sidebar");
       if (oldSidebar) {
-        console.log(
-          "YouTube Comments Sidebar: Not on watch page, removing sidebar"
-        );
         oldSidebar.remove();
       }
       isNavigating = false;
     }
   }
 });
-
-function styleContentsDiv() {
-  console.log("styleContentsDiv loaded...");
-
-  const contentsDiv = document.getElementById("contents");
-  if (contentsDiv) {
-    contentsDiv.style.border = "3px solid red"; // example border
-    contentsDiv.style.padding = "10px";
-    contentsDiv.style.borderRadius = "8px";
-  } else {
-    // Retry in 500ms if element not found (YouTube dynamically loads content)
-    setTimeout(styleContentsDiv, 500);
-  }
-}
 
 navigationObserver.observe(document.body, { childList: true, subtree: true });
