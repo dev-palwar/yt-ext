@@ -1,12 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
 
+:root {
+    --ext-bg: #ffffff;
+    --ext-border: rgba(0, 0, 0, 0.1);
+    --ext-text-primary: #0f0f0f;
+    --ext-text-secondary: #606060;
+    --ext-btn-hover-bg: rgba(0, 0, 0, 0.05);
+    --ext-scrollbar-thumb: #c1c1c1;
+    --ext-scrollbar-track: transparent;
+    --ext-comment-hover: rgba(0, 0, 0, 0.02);
+}
+
+html[dark] {
+    --ext-bg: #0f0f0f;
+    --ext-border: rgba(255, 255, 255, 0.1);
+    --ext-text-primary: #f1f1f1;
+    --ext-text-secondary: #aaaaaa;
+    --ext-btn-hover-bg: rgba(255, 255, 255, 0.1);
+    --ext-scrollbar-thumb: #717171;
+    --ext-scrollbar-track: transparent;
+    --ext-comment-hover: rgba(255, 255, 255, 0.05);
+}
+
 #yt-comments-sidebar {
     width: 100%;
     height: fit-content;
     max-height: calc(100vh - 120px);
     margin-bottom: 24px;
-    background: var(--yt-spec-base-background, #0f0f0f);
-    border: 1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
+    background: var(--yt-spec-base-background, var(--ext-bg));
+    border: 1px solid var(--yt-spec-10-percent-layer, var(--ext-border));
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -15,8 +37,6 @@
     font-family: "Roboto", "Arial", sans-serif;
     overflow: hidden;
 }
-
-
 
 /* Hidden State Fix */
 #yt-comments-sidebar.hidden {
@@ -38,7 +58,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    border-bottom: 1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
+    border-bottom: 1px solid var(--yt-spec-10-percent-layer, var(--ext-border));
     background: transparent;
     z-index: 2;
 }
@@ -47,7 +67,7 @@
     margin: 0;
     font-size: 16px;
     font-weight: 500;
-    color: var(--yt-spec-text-primary, #f1f1f1);
+    color: var(--yt-spec-text-primary, var(--ext-text-primary));
 }
 
 .sidebar-controls {
@@ -58,7 +78,7 @@
 .sidebar-controls button {
     background: transparent;
     border: none;
-    color: var(--yt-spec-text-secondary, #aaa);
+    color: var(--yt-spec-text-secondary, var(--ext-text-secondary));
     font-size: 14px;
     cursor: pointer;
     width: 36px;
@@ -71,8 +91,8 @@
 }
 
 .sidebar-controls button:hover {
-    background: var(--yt-spec-badge-chip-background, rgba(255, 255, 255, 0.1));
-    color: var(--yt-spec-text-primary, #fff);
+    background: var(--yt-spec-badge-chip-background, var(--ext-btn-hover-bg));
+    color: var(--yt-spec-text-primary, var(--ext-text-primary));
 }
 
 /* Comments Container */
@@ -84,7 +104,7 @@
     transition: opacity 0.3s ease;
     opacity: 1;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    scrollbar-color: var(--ext-scrollbar-thumb) var(--ext-scrollbar-track);
 }
 
 .comments-container::-webkit-scrollbar {
@@ -92,17 +112,13 @@
 }
 
 .comments-container::-webkit-scrollbar-track {
-    background: transparent;
+    background: var(--ext-scrollbar-track);
 }
 
 .comments-container::-webkit-scrollbar-thumb {
-    background: #717171;
+    background: var(--ext-scrollbar-thumb);
     border-radius: 4px;
 }
-
-/* .comments-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.4);
-} */
 
 /* Loading and Error States */
 .loading,
@@ -123,17 +139,19 @@
 }
 
 /* Embedded YouTube Comments Overrides */
-/* Note: We try to style the embedded content if shadow DOM permits, or global styling */
 .in-sidebar {
     background: transparent !important;
 }
 
 .in-sidebar ytd-comment-thread-renderer {
     margin-bottom: 16px;
+    border-radius: 8px;
+    padding: 8px;
+    transition: background-color 0.2s ease;
 }
 
 .in-sidebar ytd-comment-thread-renderer:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--ext-comment-hover);
 }
 
 /* Make sure the youtube secondary column properly allows scrolling */
