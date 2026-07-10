@@ -17,7 +17,6 @@ function waitForElement(selector, callback) {
 
 // Creates the sidebar
 function createSidebar() {
-
   // Checks if sidebar already exists
   if (document.getElementById("yt-comments-sidebar")) {
     return;
@@ -86,7 +85,6 @@ function createSidebar() {
 
 // Moves the actual YouTube comments section into the sidebar
 function moveCommentsToSidebar() {
-
   const container = document.getElementById("sidebar-comments");
   if (!container) {
     return;
@@ -100,7 +98,6 @@ function moveCommentsToSidebar() {
 
   // Function to trigger YouTube to load comments by scrolling
   function triggerCommentsLoad() {
-
     // Finds comments section in original location
     const commentsSection = document.querySelector("ytd-comments#comments");
     if (commentsSection) {
@@ -118,7 +115,6 @@ function moveCommentsToSidebar() {
 
   // Functions to attempt moving comments
   function attemptMove(retryCount = 0) {
-
     // Firsts, try to trigger loading on early attempts
     if (retryCount === 2 || retryCount === 5) {
       triggerCommentsLoad();
@@ -141,31 +137,41 @@ function moveCommentsToSidebar() {
 
     if (!commentsSection) {
       if (retryCount < 25) {
-        container.innerHTML = `<div class="loading">Waiting for comments section... (${
-          retryCount + 1
-        }/25)</div>`;
+        container.textContent = '';
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'loading';
+        loadingDiv.textContent = `Waiting for comments section... (${retryCount + 1}/25)`;
+        container.appendChild(loadingDiv);
         setTimeout(() => attemptMove(retryCount + 1), 800);
       } else {
-        container.innerHTML =
-          '<div class="error">Comments not found. Please scroll down on the page first, then click refresh.</div>';
+        container.textContent = '';
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error';
+        errorDiv.textContent = 'Comments not found. Please scroll down on the page first, then click refresh.';
+        container.appendChild(errorDiv);
       }
       return;
     }
 
-
     // Checks if comments section has loaded content
     const commentRenderer = commentsSection.querySelector(
-      "ytd-comment-thread-renderer"
+      "ytd-comment-thread-renderer",
     );
     const hasSpinner = commentsSection.querySelector("tp-yt-paper-spinner");
     const hasContinuation = commentsSection.querySelector("#continuations");
 
-
     // If no comments yet and still early, keep waiting
     if (!commentRenderer && retryCount < 5) {
-      container.innerHTML = `<div class="loading">Comments loading... (${
-        retryCount + 1
-      }/5)<br><small>Try scrolling down on the page</small></div>`;
+      container.textContent = '';
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'loading';
+      loadingDiv.textContent = `Comments loading... (${retryCount + 1}/5)`;
+      const br = document.createElement('br');
+      const small = document.createElement('small');
+      small.textContent = 'Try scrolling down on the page';
+      loadingDiv.appendChild(br);
+      loadingDiv.appendChild(small);
+      container.appendChild(loadingDiv);
       setTimeout(() => attemptMove(retryCount + 1), 1000);
       return;
     }
@@ -175,9 +181,8 @@ function moveCommentsToSidebar() {
       return;
     }
 
-
     // Clears container
-    container.innerHTML = "";
+    container.textContent = "";
 
     // Moves the entire comments section into our container
     try {
@@ -192,7 +197,6 @@ function moveCommentsToSidebar() {
       // Adds custom class for styling
       commentsSection.classList.add("in-sidebar");
 
-
       // If no comments visible yet, show a message
       if (!commentRenderer && !hasSpinner) {
         const notice = document.createElement("div");
@@ -201,7 +205,7 @@ function moveCommentsToSidebar() {
         notice.style.top = "60px";
         notice.style.left = "50%";
         notice.style.transform = "translateX(-50%)";
-        notice.innerHTML = "Scroll in this area to load comments";
+        notice.textContent = "Scroll in this area to load comments";
         container.appendChild(notice);
 
         setTimeout(() => notice.remove(), 3000);
@@ -210,8 +214,11 @@ function moveCommentsToSidebar() {
       // Observes for new comments being loaded
       observeCommentChanges(commentsSection);
     } catch (error) {
-      container.innerHTML =
-        '<div class="error">Error loading comments. Please refresh.</div>';
+      container.textContent = '';
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error';
+      errorDiv.textContent = 'Error loading comments. Please refresh.';
+      container.appendChild(errorDiv);
     }
   }
 
@@ -221,8 +228,7 @@ function moveCommentsToSidebar() {
 
 // Observes changes in the comments section (for infinite scroll, etc.)
 function observeCommentChanges(commentsSection) {
-  const observer = new MutationObserver((mutations) => {
-  });
+  const observer = new MutationObserver((mutations) => {});
 
   observer.observe(commentsSection, {
     childList: true,
@@ -249,7 +255,6 @@ function toggleSidebar() {
 
 // Initializes
 function init() {
-
   // Waits for the page to be ready
   waitForElement("#secondary-inner", () => {
     setTimeout(createSidebar, 2000);
